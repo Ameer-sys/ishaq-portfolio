@@ -30,14 +30,13 @@
   <body>
     <a class="skip-link" href="#main">Skip to content</a>
     <div class="sky-shell" aria-hidden="true">
-      <div class="sun"></div>
+      <div class="sun">
+        <span class="sun-face">:)</span>
+      </div>
       <div class="cloud cloud-one"></div>
       <div class="cloud cloud-two"></div>
       <div class="wave wave-back"></div>
       <div class="wave wave-front"></div>
-      <div class="magic-dust dust-one"></div>
-      <div class="magic-dust dust-two"></div>
-      <div class="magic-dust dust-three"></div>
     </div>
 
     <header class="site-header">
@@ -52,17 +51,23 @@
         <a href="#game">Game</a>
         <a href="#contact">Contact</a>
       </nav>
-      <button class="icon-button" id="calmMode" type="button" aria-pressed="false" title="Calm mode">
-        <span aria-hidden="true">~</span>
-        <span class="sr-only">Toggle calm mode</span>
-      </button>
+      <div class="header-tools">
+        <button class="icon-button theme-button" id="themeToggle" type="button" aria-pressed="false" title="Toggle dark mode">
+          <span aria-hidden="true">D</span>
+          <span class="sr-only">Toggle dark mode</span>
+        </button>
+        <button class="icon-button" id="calmMode" type="button" aria-pressed="false" title="Calm mode">
+          <span aria-hidden="true">~</span>
+          <span class="sr-only">Toggle calm mode</span>
+        </button>
+      </div>
     </header>
 
     <main id="main">
       <section class="hero section" id="home">
         <div class="hero-copy reveal">
           <p class="eyebrow pixel-label">Digital Seas Developer</p>
-          <h1>Ishaq Ishaq Nasiru</h1>
+          <h1><span id="typingName" aria-label="Ishaq Ishaq Nasiru">Ishaq Ishaq Nasiru</span></h1>
           <p class="hero-text">
             Computer Science student building AI tools, mobile apps, smart systems,
             and playful web experiences with a practical, user-first mindset.
@@ -73,9 +78,9 @@
             <a class="button ghost" href="#contact">Message Me</a>
           </div>
           <div class="quick-stats" aria-label="Portfolio highlights">
-            <div><strong>AI</strong><span>Gemini, Deepseek, route reasoning</span></div>
-            <div><strong>Mobile</strong><span>React Native, Expo, Supabase</span></div>
-            <div><strong>Systems</strong><span>C++, .NET, networking, IoT logic</span></div>
+            <div class="cloud-card"><strong>AI</strong><span>Gemini, Deepseek, route reasoning</span></div>
+            <div class="cloud-card"><strong>Mobile</strong><span>React Native, Expo, Supabase</span></div>
+            <div class="cloud-card"><strong>Systems</strong><span>C++, .NET, networking, IoT logic</span></div>
           </div>
         </div>
         <div class="ship-stage" aria-label="Animated ship sailing across digital waves">
@@ -85,9 +90,6 @@
             <div class="mast"></div>
             <div class="hull"></div>
           </div>
-          <div class="pixel-coin coin-one"></div>
-          <div class="pixel-coin coin-two"></div>
-          <div class="pixel-coin coin-three"></div>
         </div>
       </section>
 
@@ -108,6 +110,7 @@
               <span>Waterloo, Ontario</span>
               <span>Conestoga College</span>
               <span>Seeking internships</span>
+              <span>ConHacks 2025 - LegalAI</span>
             </div>
           </div>
           <aside class="profile-card reveal" aria-label="Profile photo and summary">
@@ -202,12 +205,100 @@
 
       <section class="section skills" id="skills">
         <div class="section-heading reveal">
-          <p class="eyebrow pixel-label">Inventory</p>
-          <h2>Tools I use.</h2>
+          <p class="eyebrow pixel-label">Collected Pieces</p>
+          <h2>Tools I have picked up.</h2>
+          <p class="section-intro">Languages, frameworks, services, and platforms I keep close on deck.</p>
         </div>
-        <div class="skill-marquee" aria-label="Technical skills">
-          <span>C</span><span>C++</span><span>C#</span><span>Python</span><span>JavaScript</span><span>React Native</span>
-          <span>Flask</span><span>Supabase</span><span>MySQL</span><span>Docker</span><span>Git</span><span>APIs</span>
+        <div class="skill-shelves">
+          <section class="skill-shelf reveal" aria-label="Languages used and learned">
+            <h3 class="pixel-label">Languages</h3>
+            <div class="skill-grid">
+              <article class="skill-card" data-tooltip="Systems foundations, memory-aware thinking, and problem solving.">
+                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/c/c-original.svg" alt="" loading="lazy" />
+                <strong>C</strong>
+              </article>
+              <article class="skill-card" data-tooltip="Object-oriented builds, algorithms, and networking-heavy coursework.">
+                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/cplusplus/cplusplus-original.svg" alt="" loading="lazy" />
+                <strong>C++</strong>
+              </article>
+              <article class="skill-card" data-tooltip="Smart systems, MVVM, and desktop application architecture.">
+                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/csharp/csharp-original.svg" alt="" loading="lazy" />
+                <strong>C#</strong>
+              </article>
+              <article class="skill-card" data-tooltip="Backends, AI integrations, scripting, and data workflows.">
+                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/python/python-original.svg" alt="" loading="lazy" />
+                <strong>Python</strong>
+              </article>
+              <article class="skill-card" data-tooltip="Frontend behavior, mobile apps, and interactive portfolio work.">
+                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/javascript/javascript-original.svg" alt="" loading="lazy" />
+                <strong>JavaScript</strong>
+              </article>
+              <article class="skill-card" data-tooltip="Queries, storage design, and app data persistence.">
+                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/mysql/mysql-original.svg" alt="" loading="lazy" />
+                <strong>SQL</strong>
+              </article>
+            </div>
+          </section>
+
+          <section class="skill-shelf reveal" aria-label="Frameworks and products">
+            <h3 class="pixel-label">Frameworks</h3>
+            <div class="skill-grid">
+              <article class="skill-card" data-tooltip="Service-first Python backend work and API routing.">
+                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/flask/flask-original.svg" alt="" loading="lazy" />
+                <strong>Flask</strong>
+              </article>
+              <article class="skill-card" data-tooltip="Mobile-first UI and trip analytics app development.">
+                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/react/react-original.svg" alt="" loading="lazy" />
+                <strong>React Native</strong>
+              </article>
+              <article class="skill-card" data-tooltip="Fast mobile iteration, testing, and deployment loops.">
+                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/expo/expo-original.svg" alt="" loading="lazy" />
+                <strong>Expo</strong>
+              </article>
+              <article class="skill-card" data-tooltip="Interactive maps, routes, and visual voyage planning.">
+                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/leaflet/leaflet-original.svg" alt="" loading="lazy" />
+                <strong>Leaflet</strong>
+              </article>
+              <article class="skill-card" data-tooltip="Secure sign-in, profile flows, and token-aware app logic.">
+                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/auth0/auth0-original.svg" alt="" loading="lazy" />
+                <strong>Auth0</strong>
+              </article>
+              <article class="skill-card" data-tooltip="Cross-platform desktop UI with structured MVVM patterns.">
+                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/dot-net/dot-net-original.svg" alt="" loading="lazy" />
+                <strong>.NET</strong>
+              </article>
+            </div>
+          </section>
+
+          <section class="skill-shelf reveal" aria-label="Tools and platforms">
+            <h3 class="pixel-label">Platforms</h3>
+            <div class="skill-grid">
+              <article class="skill-card" data-tooltip="Containers for consistent local builds and shipping demos cleanly.">
+                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/docker/docker-original.svg" alt="" loading="lazy" />
+                <strong>Docker</strong>
+              </article>
+              <article class="skill-card" data-tooltip="Version control, team collaboration, and portfolio publishing.">
+                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/git/git-original.svg" alt="" loading="lazy" />
+                <strong>Git</strong>
+              </article>
+              <article class="skill-card" data-tooltip="Realtime database work, auth, and app data storage.">
+                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/supabase/supabase-original.svg" alt="" loading="lazy" />
+                <strong>Supabase</strong>
+              </article>
+              <article class="skill-card" data-tooltip="LLM integration for decision support, legal guidance, and planning flows.">
+                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/googlecloud/googlecloud-original.svg" alt="" loading="lazy" />
+                <strong>Gemini</strong>
+              </article>
+              <article class="skill-card" data-tooltip="AI-assisted chat and response generation for LegalAI workflows.">
+                <span class="skill-glyph">DS</span>
+                <strong>Deepseek</strong>
+              </article>
+              <article class="skill-card" data-tooltip="Project shipping, README clarity, and a clean public body of work.">
+                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/github/github-original.svg" alt="" loading="lazy" />
+                <strong>GitHub</strong>
+              </article>
+            </div>
+          </section>
         </div>
       </section>
 
@@ -234,12 +325,17 @@
             <p>Hackathon participant and contributor. Team brainstorming, rapid development, and prototype delivery.</p>
           </article>
           <article class="timeline-card reveal">
-            <span>2026</span>
-            <h3>ConHacks</h3>
+            <span>ConHacks 2025</span>
+            <h3>LegalAI</h3>
+            <p>Built a legal-tech assistant focused on Ontario tenant and landlord guidance under hackathon time pressure.</p>
+          </article>
+          <article class="timeline-card reveal">
+            <span>April 2026</span>
+            <h3>ConHacks 2026</h3>
             <p>Developer on Naftelia, an AI-powered maritime planning platform with real-world APIs.</p>
           </article>
           <article class="timeline-card reveal">
-            <span>Digital Learning</span>
+            <span>April 2026 - Present</span>
             <h3>eCampusOntario</h3>
             <p>Board of Director's role. Contributing to digital learning, education technology, and innovation discussions.</p>
           </article>
@@ -250,47 +346,45 @@
         <div class="section-heading reveal">
           <p class="eyebrow pixel-label">Gallery</p>
           <h2>Moments on the map.</h2>
+          <p class="section-intro">A tighter slideshow of hackathons, tech events, community work, and a few good snapshots.</p>
         </div>
-        <div class="gallery reveal">
-          <button class="gallery-nav" id="prevSlide" type="button" aria-label="Previous gallery slide">‹</button>
-          <figure class="gallery-frame">
-            <img id="galleryImage" src="assets/ishaq-headshot.jpeg" alt="Ishaq portrait" draggable="false" />
-            <figcaption>
-              <strong id="galleryTitle">Professional Portrait</strong>
-              <span id="galleryCaption">Portfolio headshot used for recruiter-facing pages and professional profiles.</span>
-            </figcaption>
-          </figure>
-          <button class="gallery-nav" id="nextSlide" type="button" aria-label="Next gallery slide">›</button>
+        <div class="gallery-shell reveal">
+          <div class="gallery">
+            <button class="gallery-nav" id="prevSlide" type="button" aria-label="Previous gallery slide">&#8249;</button>
+            <figure class="gallery-frame">
+              <div class="gallery-stage">
+                <img id="galleryImage" src="assets/ishaq-headshot.jpeg" alt="Ishaq portrait" draggable="false" />
+              </div>
+              <figcaption>
+                <strong id="galleryTitle">Professional Portrait</strong>
+                <span id="galleryCaption">Portfolio headshot used for recruiter-facing pages and professional profiles.</span>
+              </figcaption>
+            </figure>
+            <button class="gallery-nav" id="nextSlide" type="button" aria-label="Next gallery slide">&#8250;</button>
+          </div>
+          <div class="gallery-dots" id="galleryDots" aria-label="Gallery slides"></div>
         </div>
-        <p class="gallery-note reveal">Add event photos later and the slideshow will rotate them with captions.</p>
       </section>
 
       <section class="section game-section" id="game">
         <div class="section-heading reveal">
           <p class="eyebrow pixel-label">Playable Bit</p>
           <h2>Collect the stack.</h2>
-          <p class="section-intro">Desktop: WASD or arrows. Phone: tap the controls.</p>
+          <p class="section-intro">Desktop: WASD or arrows. Phone: tap the arrows.</p>
         </div>
         <div class="game-layout">
           <div class="game-panel reveal">
             <canvas id="techGame" width="760" height="420" aria-label="Collect the tech mini game"></canvas>
             <div class="game-controls">
               <button class="button primary" id="startGame" type="button">Start Game</button>
-              <p id="gameStatus">Collect tech. Dodge rocks. Keep the Ameer ship alive.</p>
+              <p id="gameStatus">Collect tech. Dodge rocks. Keep Golden Sunny moving.</p>
             </div>
             <div class="touch-pad" aria-label="Mobile game controls">
-              <button type="button" data-move="up">W</button>
-              <button type="button" data-move="left">A</button>
-              <button type="button" data-move="down">S</button>
-              <button type="button" data-move="right">D</button>
+              <button type="button" data-move="up">&#8593;</button>
+              <button type="button" data-move="left">&#8592;</button>
+              <button type="button" data-move="down">&#8595;</button>
+              <button type="button" data-move="right">&#8594;</button>
             </div>
-          </div>
-          <div class="game-copy reveal">
-            <h3>Fun, but still useful.</h3>
-            <p>
-              A small canvas game shows interaction logic, animation, keyboard controls,
-              and mobile-friendly input without getting in the way of the portfolio.
-            </p>
           </div>
         </div>
       </section>
@@ -305,9 +399,11 @@
         <div class="contact-block reveal">
           <p class="eyebrow pixel-label">Harbor</p>
           <h2>Send a message.</h2>
+          <p class="section-intro">Quick hello, internship lead, project idea, community invite. I am listening.</p>
           <form
             class="contact-form"
-            action="https://formsubmit.co/ishaqnasiru29@gmail.com"
+            id="contactForm"
+            action="https://formsubmit.co/ajax/ishaqnasiru29@gmail.com"
             method="POST"
           >
             <input type="hidden" name="_subject" value="Portfolio message for Ishaq" />
@@ -324,10 +420,13 @@
               Message
               <textarea name="message" rows="4" required></textarea>
             </label>
-            <button class="button primary" type="submit">Send Message</button>
+            <div class="contact-actions">
+              <button class="button primary send-button" id="sendMessageButton" type="submit">Send Message</button>
+              <p class="form-status" id="formStatus" aria-live="polite"></p>
+            </div>
           </form>
           <div class="direct-links">
-            <a href="mailto:ishaqnasiru29@gmail.com">ishaqnasiru29@gmail.com</a>
+            <a href="mailto:ishaqnasiru29@gmail.com">Email</a>
             <a href="https://github.com/Ameer-sys" target="_blank" rel="noreferrer">GitHub</a>
             <a href="https://www.linkedin.com/in/ishaq-ishaq-nasiru" target="_blank" rel="noreferrer">LinkedIn</a>
           </div>
@@ -336,7 +435,17 @@
     </main>
 
     <footer class="site-footer">
-      <p>Built by Ishaq Ishaq Nasiru. Digital seas, clean builds, good energy.</p>
+      <div>
+        <strong>Ishaq Ishaq Nasiru</strong>
+        <p>Computer Science student building practical software, playful interfaces, and community momentum.</p>
+      </div>
+      <nav aria-label="Footer navigation">
+        <a href="#home">Home</a>
+        <a href="#projects">Projects</a>
+        <a href="#volunteer">Crew Log</a>
+        <a href="#gallery">Gallery</a>
+        <a href="#contact">Contact</a>
+      </nav>
     </footer>
 
     <script src="script.js"></script>
