@@ -1,27 +1,28 @@
-const calmModeButton = document.querySelector("#calmMode");
+const data = window.portfolioData;
+const themeKey = "portfolio-theme";
+const deviconBase = "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/";
+
 const themeToggle = document.querySelector("#themeToggle");
-const typingName = document.querySelector("#typingName");
+const calmModeButton = document.querySelector("#calmMode");
 const ship = document.querySelector("#ship");
+const featuredProjects = document.querySelector("#featuredProjects");
+const additionalProjects = document.querySelector("#additionalProjects");
+const experienceList = document.querySelector("#experienceList");
+const communityList = document.querySelector("#communityList");
+const skillsList = document.querySelector("#skillsList");
+const currentYear = document.querySelector("#currentYear");
+const contactForm = document.querySelector("#contactForm");
+const formStatus = document.querySelector("#formStatus");
+const sendMessageButton = document.querySelector("#sendMessageButton");
+
 const canvas = document.querySelector("#techGame");
 const ctx = canvas.getContext("2d");
 const startButton = document.querySelector("#startGame");
 const gameStatus = document.querySelector("#gameStatus");
 const touchButtons = document.querySelectorAll("[data-move]");
-const revealItems = document.querySelectorAll(".reveal");
-const galleryImage = document.querySelector("#galleryImage");
-const galleryTitle = document.querySelector("#galleryTitle");
-const galleryCaption = document.querySelector("#galleryCaption");
-const galleryDots = document.querySelector("#galleryDots");
-const prevSlide = document.querySelector("#prevSlide");
-const nextSlide = document.querySelector("#nextSlide");
-const contactForm = document.querySelector("#contactForm");
-const formStatus = document.querySelector("#formStatus");
-const sendMessageButton = document.querySelector("#sendMessageButton");
 
-const themeKey = "portfolio-theme";
 const keys = new Set();
 let animationFrame = null;
-let galleryTimer = null;
 let gameRunning = false;
 let score = 0;
 let timeLeft = 50;
@@ -31,224 +32,291 @@ let player;
 let collectibles;
 let rocks;
 let boosts;
-let galleryIndex = 0;
-let typingIndex = typingLinesSeedLength();
-let typingTextIndex = 0;
-let isDeleting = false;
 
-const typingLines = ["Ishaq Ishaq Nasiru", "Ishaq Nasiru", "Ameer Energy"];
-const techItems = ["AI", "C#", "Py", "JS", "SQL", "API", "Git", "UX", "C++", "Map"];
+const techItems = ["AI", "C#", "Py", "JS", "SQL", "API", "Git", "UX", "C++", "IoT"];
 const funnyHits = [
-  "Golden Sunny clipped a rock. We reset with style.",
-  "Tiny crash. Big comeback.",
-  "Navigation says recalculating with confidence.",
-  "That rock had personal beef.",
+  "Golden Sunny clipped a rock. Course corrected.",
+  "Tiny crash. Strong recovery.",
+  "Navigation is recalculating with confidence.",
+  "That rock was unusually committed.",
 ];
 
-const gallerySlides = [
-  {
-    image: "assets/gallery/hackcanada-team.jpeg",
-    title: "HackCanada Crew",
-    caption: "Team moment during HackCanada, right in the middle of the build energy.",
-    alt: "Ishaq with HackCanada teammates during the event",
-  },
-  {
-    image: "assets/gallery/hackcanada-break.jpeg",
-    title: "HackCanada Candid",
-    caption: "One of those behind-the-scenes moments where the pace slows for a second and the vibe stays high.",
-    alt: "Ishaq seated during HackCanada in a candid event moment",
-  },
-  {
-    image: "assets/gallery/hackcanada-duo.jpeg",
-    title: "Post-build Snapshot",
-    caption: "Quick photo with a teammate after the pressure, ideas, and problem solving.",
-    alt: "Ishaq and a HackCanada teammate posing together",
-  },
-  {
-    image: "assets/gallery/growth-summit-action.jpeg",
-    title: "Growth Summit Volunteering",
-    caption: "Working the room, helping the event flow, and staying part of the conversations.",
-    alt: "Ishaq volunteering during the Growth Summit event",
-  },
-  {
-    image: "assets/gallery/growth-summit-booth.jpeg",
-    title: "Booth Setup Mode",
-    caption: "Event support, logistics, and showing up for the team side of tech.",
-    alt: "Ishaq with volunteers at a summit booth",
-  },
-  {
-    image: "assets/gallery/growth-summit-crew.jpeg",
-    title: "Crew Photo",
-    caption: "Full group shot from the Growth Summit team day.",
-    alt: "Large group photo featuring Ishaq and event volunteers",
-  },
-  {
-    image: "assets/gallery/badge-collection.jpeg",
-    title: "Badges and Milestones",
-    caption: "A little collection of events, rooms, and communities I have been part of.",
-    alt: "Collection of event badges and credentials",
-  },
-  {
-    image: "assets/gallery/ai-build-group.jpeg",
-    title: "Google Build with AI",
-    caption: "Community learning session, good people, and a very real reminder that showing up matters.",
-    alt: "Group photo from Google Build with AI event",
-  },
-  {
-    image: "assets/gallery/gdg-team.jpeg",
-    title: "GDG Waterloo Night",
-    caption: "A strong room for AI talks, builders, and shared curiosity.",
-    alt: "Team photo from a GDG Waterloo event",
-  },
-  {
-    image: "assets/gallery/it-club-table.jpg",
-    title: "IT Club Table",
-    caption: "Representing IT Club, talking with students, and making tech spaces feel open and inviting.",
-    alt: "Ishaq seated at an IT Club information table",
-  },
-  {
-    image: "assets/gallery/autonomic-photo.jpeg",
-    title: "A Little Extra Personality",
-    caption: "Because a portfolio should still feel human.",
-    alt: "Ishaq in a photobooth-style group picture",
-  },
-  {
-    image: "assets/gallery/autonomic-fam.jpeg",
-    title: "Future CEO Energy",
-    caption: "One of the funniest event shots, so it earned a place in the rotation.",
-    alt: "Ishaq holding a playful sign in a photobooth picture",
-  },
-];
+function escapeHtml(value) {
+  return String(value)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
 
-function applySavedTheme() {
-  const savedTheme = localStorage.getItem(themeKey);
-  const shouldUseDark = savedTheme === "dark";
-  document.body.classList.toggle("dark", shouldUseDark);
-  themeToggle.setAttribute("aria-pressed", String(shouldUseDark));
-  themeToggle.querySelector("span[aria-hidden='true']").textContent = shouldUseDark ? "L" : "D";
+function projectVisual(project) {
+  const title = escapeHtml(project.title);
+  const monogram = title
+    .split(/\s+/)
+    .map((word) => word[0])
+    .join("")
+    .slice(0, 2);
+
+  const visuals = {
+    pillpal:
+      '<div class="pillbox" aria-hidden="true"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span></div>',
+    naftelia: '<div class="route-line" aria-hidden="true"></div>',
+    legalai: '<div class="document-stack" aria-hidden="true"></div>',
+    smadium: '<div class="stadium-rings" aria-hidden="true"></div>',
+    drivetracker: '<div class="phone-frame" aria-hidden="true"></div>',
+    robot: '<div class="robot-orbit" aria-hidden="true"></div>',
+  };
+
+  return `
+    <div class="project-visual project-visual-${escapeHtml(project.visual || "default")}" aria-label="${title} project visual">
+      <span class="project-monogram" aria-hidden="true">${escapeHtml(monogram)}</span>
+      ${visuals[project.visual] || ""}
+    </div>
+  `;
+}
+
+function projectLinks(project) {
+  const links = [];
+
+  if (project.githubUrl) {
+    links.push(
+      `<a class="project-link" href="${escapeHtml(project.githubUrl)}" target="_blank" rel="noopener noreferrer">GitHub</a>`
+    );
+  }
+
+  if (project.liveUrl) {
+    links.push(
+      `<a class="project-link" href="${escapeHtml(project.liveUrl)}" target="_blank" rel="noopener noreferrer">Live project</a>`
+    );
+  }
+
+  return links.length ? `<div class="project-links">${links.join("")}</div>` : "";
+}
+
+function projectCard(project, index, primary = false) {
+  const technologies = project.technologies || [];
+  const features = project.keyFeatures || [];
+  const classNames = primary
+    ? "project-card project-card-featured project-card-primary reveal"
+    : project.featured
+      ? "project-card project-card-featured reveal"
+      : "project-card project-card-compact reveal";
+
+  return `
+    <article class="${classNames}">
+      ${projectVisual(project)}
+      <div class="project-body">
+        <div class="project-topline">
+          <span class="project-number">${String(index + 1).padStart(2, "0")}</span>
+          ${project.projectStatus ? `<span class="project-status">${escapeHtml(project.projectStatus)}</span>` : ""}
+        </div>
+        <h3>${escapeHtml(project.title)}</h3>
+        <p class="project-summary">${escapeHtml(project.shortDescription)}</p>
+        ${
+          project.fullDescription
+            ? `<p class="project-summary">${escapeHtml(project.fullDescription)}</p>`
+            : ""
+        }
+        ${
+          project.role || project.date
+            ? `
+              <div class="project-meta">
+                ${
+                  project.role
+                    ? `<div><span>Role</span><strong>${escapeHtml(project.role)}</strong></div>`
+                    : ""
+                }
+                ${
+                  project.date
+                    ? `<div><span>Context</span><strong>${escapeHtml(project.date)}</strong></div>`
+                    : ""
+                }
+              </div>
+            `
+            : ""
+        }
+        ${
+          features.length
+            ? `<ul class="project-features">${features
+                .map((feature) => `<li>${escapeHtml(feature)}</li>`)
+                .join("")}</ul>`
+            : ""
+        }
+        ${
+          technologies.length
+            ? `<div class="project-tags" aria-label="${escapeHtml(project.title)} technologies">${technologies
+                .map((technology) => `<span>${escapeHtml(technology)}</span>`)
+                .join("")}</div>`
+            : ""
+        }
+        ${projectLinks(project)}
+      </div>
+    </article>
+  `;
+}
+
+function renderProjects() {
+  const featured = data.projects.filter((project) => project.featured);
+  const additional = data.projects.filter((project) => !project.featured);
+
+  featuredProjects.innerHTML = featured
+    .map((project, index) => projectCard(project, index, index === 0))
+    .join("");
+  additionalProjects.innerHTML = additional
+    .map((project, index) => projectCard(project, featured.length + index))
+    .join("");
+}
+
+function renderExperience() {
+  experienceList.innerHTML = data.experience
+    .map(
+      (item) => `
+        <article class="experience-card reveal">
+          <time class="experience-date">${escapeHtml(item.date)}</time>
+          <div>
+            <h3>${escapeHtml(item.organization)}</h3>
+            <strong>${escapeHtml(item.title)}</strong>
+            <p>${escapeHtml(item.description)}</p>
+          </div>
+        </article>
+      `
+    )
+    .join("");
+}
+
+function renderCommunity() {
+  communityList.innerHTML = data.community
+    .map(
+      (item, index) => `
+        <article class="timeline-card reveal" data-index="${String(index + 1).padStart(2, "0")}">
+          <time>${escapeHtml(item.date)}</time>
+          <h3>${escapeHtml(item.organization)}</h3>
+          <strong>${escapeHtml(item.title)}</strong>
+          <p>${escapeHtml(item.description)}</p>
+        </article>
+      `
+    )
+    .join("");
+}
+
+function renderSkills() {
+  skillsList.innerHTML = data.skills
+    .map(
+      (group) => `
+        <section class="skill-shelf reveal" aria-label="${escapeHtml(group.category)}">
+          <h3 class="pixel-label">${escapeHtml(group.category)}</h3>
+          <div class="skill-grid">
+            ${group.items
+              .map((item) => {
+                const graphic = item.icon
+                  ? `<img src="${deviconBase}${escapeHtml(item.icon)}" alt="${escapeHtml(item.name)} logo" loading="lazy" />`
+                  : `<span class="skill-glyph" aria-hidden="true">${escapeHtml(item.glyph || item.name.slice(0, 2))}</span>`;
+
+                return `
+                  <article
+                    class="skill-card"
+                    tabindex="0"
+                    data-tooltip="${escapeHtml(item.note)}"
+                    aria-label="${escapeHtml(item.name)}. ${escapeHtml(item.note)}"
+                  >
+                    ${graphic}
+                    <strong>${escapeHtml(item.name)}</strong>
+                  </article>
+                `;
+              })
+              .join("")}
+          </div>
+        </section>
+      `
+    )
+    .join("");
+}
+
+function renderPortfolioContent() {
+  renderProjects();
+  renderExperience();
+  renderCommunity();
+  renderSkills();
+  currentYear.textContent = new Date().getFullYear();
+}
+
+function currentTheme() {
+  return document.documentElement.dataset.theme === "dark" ? "dark" : "light";
+}
+
+function updateThemeControl() {
+  const dark = currentTheme() === "dark";
+  themeToggle.setAttribute("aria-label", dark ? "Switch to light mode" : "Switch to dark mode");
+  themeToggle.setAttribute("title", dark ? "Switch to light mode" : "Switch to dark mode");
 }
 
 function toggleTheme() {
-  const darkMode = document.body.classList.toggle("dark");
-  localStorage.setItem(themeKey, darkMode ? "dark" : "light");
-  themeToggle.setAttribute("aria-pressed", String(darkMode));
-  themeToggle.querySelector("span[aria-hidden='true']").textContent = darkMode ? "L" : "D";
+  const nextTheme = currentTheme() === "dark" ? "light" : "dark";
+  document.documentElement.dataset.theme = nextTheme;
+  localStorage.setItem(themeKey, nextTheme);
+  updateThemeControl();
 }
 
 themeToggle.addEventListener("click", toggleTheme);
-applySavedTheme();
+updateThemeControl();
+
+window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", (event) => {
+  if (localStorage.getItem(themeKey)) return;
+  document.documentElement.dataset.theme = event.matches ? "dark" : "light";
+  updateThemeControl();
+});
 
 calmModeButton.addEventListener("click", () => {
   const isCalm = document.body.classList.toggle("calm");
   calmModeButton.setAttribute("aria-pressed", String(isCalm));
+  calmModeButton.setAttribute(
+    "aria-label",
+    isCalm ? "Restore decorative motion" : "Reduce decorative motion"
+  );
+  calmModeButton.setAttribute("title", isCalm ? "Restore motion" : "Reduce motion");
 });
 
-window.addEventListener("scroll", () => {
-  if (!ship || document.body.classList.contains("calm")) return;
-  const travel = Math.min(window.scrollY * 0.18, 140);
-  ship.style.translate = `${travel}px 0`;
-});
-
-const revealObserver = new IntersectionObserver(
-  (entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add("visible");
-        revealObserver.unobserve(entry.target);
-      }
-    });
+window.addEventListener(
+  "scroll",
+  () => {
+    if (!ship || document.body.classList.contains("calm")) return;
+    const travel = Math.min(window.scrollY * 0.06, 44);
+    ship.style.translate = `${travel}px 0`;
   },
-  { threshold: 0.14 }
+  { passive: true }
 );
 
-revealItems.forEach((item) => revealObserver.observe(item));
+function initializeRevealAnimations() {
+  const revealItems = document.querySelectorAll(".reveal");
 
-function typeLoop() {
-  const currentText = typingLines[typingTextIndex];
-  const visibleText = currentText.slice(0, typingIndex);
-  typingName.textContent = visibleText;
-
-  if (!isDeleting && typingIndex < currentText.length) {
-    typingIndex += 1;
-    setTimeout(typeLoop, 110);
+  if (!("IntersectionObserver" in window)) {
+    revealItems.forEach((item) => item.classList.add("visible"));
     return;
   }
 
-  if (!isDeleting && typingIndex === currentText.length) {
-    isDeleting = true;
-    setTimeout(typeLoop, 1200);
-    return;
-  }
+  const revealObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add("visible");
+        revealObserver.unobserve(entry.target);
+      });
+    },
+    { threshold: 0.12, rootMargin: "0px 0px -30px" }
+  );
 
-  if (isDeleting && typingIndex > 0) {
-    typingIndex -= 1;
-    setTimeout(typeLoop, 55);
-    return;
-  }
-
-  isDeleting = false;
-  typingTextIndex = (typingTextIndex + 1) % typingLines.length;
-  setTimeout(typeLoop, 220);
+  revealItems.forEach((item) => revealObserver.observe(item));
 }
-
-function renderGalleryDots() {
-  galleryDots.innerHTML = "";
-  gallerySlides.forEach((slide, index) => {
-    const dot = document.createElement("button");
-    dot.type = "button";
-    dot.setAttribute("aria-label", `Open slide ${index + 1}: ${slide.title}`);
-    if (index === galleryIndex) dot.classList.add("active");
-    dot.addEventListener("click", () => showGallerySlide(index));
-    galleryDots.appendChild(dot);
-  });
-}
-
-function restartGalleryTimer() {
-  window.clearInterval(galleryTimer);
-  galleryTimer = window.setInterval(() => {
-    showGallerySlide(galleryIndex + 1);
-  }, 4800);
-}
-
-function showGallerySlide(nextIndex) {
-  galleryIndex = (nextIndex + gallerySlides.length) % gallerySlides.length;
-  const slide = gallerySlides[galleryIndex];
-  galleryImage.style.opacity = "0";
-  galleryImage.style.transform = "scale(0.985)";
-
-  window.setTimeout(() => {
-    galleryImage.src = slide.image;
-    galleryImage.alt = slide.alt;
-    galleryTitle.textContent = slide.title;
-    galleryCaption.textContent = slide.caption;
-    galleryImage.style.opacity = "1";
-    galleryImage.style.transform = "scale(1)";
-    renderGalleryDots();
-  }, 160);
-}
-
-prevSlide.addEventListener("click", () => {
-  showGallerySlide(galleryIndex - 1);
-  restartGalleryTimer();
-});
-
-nextSlide.addEventListener("click", () => {
-  showGallerySlide(galleryIndex + 1);
-  restartGalleryTimer();
-});
-
-document.addEventListener("contextmenu", (event) => {
-  if (event.target.closest(".gallery-stage")) {
-    event.preventDefault();
-  }
-});
 
 window.addEventListener("keydown", (event) => {
   const key = event.key.toLowerCase();
-  if (["arrowleft", "arrowright", "arrowup", "arrowdown", "w", "a", "s", "d"].includes(key)) {
-    keys.add(key);
-    if (gameRunning) event.preventDefault();
+  if (!["arrowleft", "arrowright", "arrowup", "arrowdown", "w", "a", "s", "d"].includes(key)) {
+    return;
   }
+
+  keys.add(key);
+  if (gameRunning) event.preventDefault();
 });
 
 window.addEventListener("keyup", (event) => {
@@ -256,14 +324,14 @@ window.addEventListener("keyup", (event) => {
 });
 
 touchButtons.forEach((button) => {
-  const move = button.dataset.move;
   const keyMap = { up: "w", left: "a", down: "s", right: "d" };
-  const key = keyMap[move];
+  const key = keyMap[button.dataset.move];
 
   const press = (event) => {
     event.preventDefault();
     keys.add(key);
   };
+
   const release = (event) => {
     event.preventDefault();
     keys.delete(key);
@@ -359,7 +427,8 @@ function checkCollisions(now) {
     if (!item.collected && rectanglesTouch(player, item)) {
       item.collected = true;
       score += 1;
-      gameStatus.textContent = score % 4 === 0 ? "Golden Sunny is stacking up nicely." : "Nice pickup.";
+      gameStatus.textContent =
+        score % 4 === 0 ? "Golden Sunny is stacking up nicely." : "Nice pickup.";
     }
   });
 
@@ -398,13 +467,13 @@ function drawGame(now = performance.now()) {
 
 function drawWater(now) {
   const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
-  gradient.addColorStop(0, "#8de0f0");
+  gradient.addColorStop(0, "#9fe6ef");
   gradient.addColorStop(0.58, "#0e86a3");
   gradient.addColorStop(1, "#073f5f");
   ctx.fillStyle = gradient;
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-  ctx.fillStyle = "#ffd55a";
+  ctx.fillStyle = "#f6c943";
   ctx.beginPath();
   ctx.arc(canvas.width - 58, 52, 20, 0, Math.PI * 2);
   ctx.fill();
@@ -438,7 +507,7 @@ function drawBoat(now) {
   ctx.closePath();
   ctx.fill();
 
-  ctx.fillStyle = "#ffd55a";
+  ctx.fillStyle = "#f6c943";
   ctx.fillRect(player.x + 10, player.y + 22, 8, 8);
   ctx.fillRect(player.x + 22, player.y + 22, 8, 8);
 
@@ -455,22 +524,27 @@ function drawBoat(now) {
   ctx.fillText("GS", player.x + 27, player.y + 14);
 }
 
+function drawCloud(x, y, width, height) {
+  ctx.beginPath();
+  ctx.roundRect(x, y + height * 0.34, width, height * 0.66, 9);
+  ctx.arc(x + width * 0.3, y + height * 0.42, height * 0.35, 0, Math.PI * 2);
+  ctx.arc(x + width * 0.63, y + height * 0.32, height * 0.42, 0, Math.PI * 2);
+  ctx.fill();
+}
+
 function drawCollectibles(now) {
   collectibles.forEach((item) => {
     if (item.collected) return;
     const bob = Math.sin((now + item.x) / 260) * 4;
+    const cloudWidth = item.size + 18;
 
     ctx.fillStyle = "#ffffff";
-    roundedRect(item.x, item.y + bob, item.size + 14, item.size, 8);
-    ctx.fill();
-    ctx.strokeStyle = "#073f5f";
-    ctx.lineWidth = 2;
-    ctx.stroke();
+    drawCloud(item.x, item.y + bob, cloudWidth, item.size);
     ctx.fillStyle = "#073f5f";
-    ctx.font = "700 13px Inter, sans-serif";
+    ctx.font = "700 12px Inter, sans-serif";
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
-    ctx.fillText(item.label, item.x + item.size / 2 + 7, item.y + item.size / 2 + bob);
+    ctx.fillText(item.label, item.x + cloudWidth / 2, item.y + item.size * 0.7 + bob);
   });
 }
 
@@ -481,9 +555,9 @@ function drawBoosts(now) {
     ctx.save();
     ctx.translate(boost.x + boost.size / 2, boost.y + boost.size / 2);
     ctx.scale(pulse, pulse);
-    ctx.fillStyle = "#ffc43d";
+    ctx.fillStyle = "#f6c943";
     ctx.fillRect(-boost.size / 2, -boost.size / 2, boost.size, boost.size);
-    ctx.fillStyle = "#ff6b57";
+    ctx.fillStyle = "#e85f4d";
     ctx.fillRect(-7, -7, 14, 14);
     ctx.restore();
   });
@@ -504,13 +578,13 @@ function drawRocks() {
 
 function drawHud() {
   ctx.fillStyle = "rgba(255, 249, 234, 0.94)";
-  roundedRect(18, 16, 318, 44, 10);
+  roundedRect(18, 16, 318, 44, 8);
   ctx.fill();
   ctx.fillStyle = "#102033";
   ctx.font = "800 16px Inter, sans-serif";
   ctx.textAlign = "left";
   ctx.textBaseline = "middle";
-  ctx.fillText(`Golden Sunny`, 34, 39);
+  ctx.fillText("Golden Sunny", 34, 39);
   ctx.fillText(`Stack ${score}/${collectibles.length}`, 148, 39);
   ctx.fillText(`Time ${Math.ceil(Math.max(0, timeLeft))}`, 244, 39);
 }
@@ -538,12 +612,7 @@ function rectanglesTouch(first, second) {
 
 function roundedRect(x, y, width, height, radius) {
   ctx.beginPath();
-  ctx.moveTo(x + radius, y);
-  ctx.arcTo(x + width, y, x + width, y + height, radius);
-  ctx.arcTo(x + width, y + height, x, y + height, radius);
-  ctx.arcTo(x, y + height, x, y, radius);
-  ctx.arcTo(x, y, x + width, y, radius);
-  ctx.closePath();
+  ctx.roundRect(x, y, width, height, radius);
 }
 
 function clamp(value, min, max) {
@@ -568,29 +637,21 @@ async function submitContactForm(event) {
       body: JSON.stringify(payload),
     });
 
-    if (!response.ok) {
-      throw new Error("Message could not be delivered.");
-    }
+    if (!response.ok) throw new Error("Message could not be delivered.");
 
     contactForm.reset();
-    formStatus.textContent = "Message sent. Nice one, I will see it in my inbox.";
+    formStatus.textContent = "Message sent. Thanks for reaching out.";
   } catch (error) {
-    formStatus.textContent = "That did not send cleanly. Try the Email button just below.";
+    formStatus.textContent = "That did not send cleanly. Please use the Email button.";
   } finally {
     sendMessageButton.disabled = false;
   }
 }
 
-contactForm.addEventListener("submit", submitContactForm);
-
+renderPortfolioContent();
+initializeRevealAnimations();
 resetGame();
 drawGame();
-renderGalleryDots();
-showGallerySlide(0);
-restartGalleryTimer();
-typingName.textContent = typingLines[0];
-window.setTimeout(typeLoop, 1800);
+
 startButton.addEventListener("click", startGame);
-function typingLinesSeedLength() {
-  return "Ishaq Ishaq Nasiru".length;
-}
+contactForm.addEventListener("submit", submitContactForm);

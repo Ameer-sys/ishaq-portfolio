@@ -1,14 +1,30 @@
-# Ishaq Ishaq Nasiru Portfolio
+# Ishaq Nasiru Portfolio
 
-Ocean-themed developer portfolio for Ishaq Ishaq Nasiru, featuring selected AI,
-mobile, systems, volunteering, and web development projects.
+A responsive, framework-free portfolio for Ishaq Nasiru, built with semantic HTML, modern CSS, and vanilla JavaScript. The site highlights software, embedded systems, community involvement, and a small playable ocean game.
 
-## Highlights
+## Local Development
 
-- Animated sailor/ocean visual identity
-- Featured project cards with case-study notes
-- Skills inventory and volunteer experience
-- Optional mini-game built with HTML Canvas
-- Resume, contact form, and gallery sections
+The site does not require a build step.
 
-Visit `https://ameer-sys.github.io/ishaq-portfolio`.
+```powershell
+python -m http.server 4173
+```
+
+Open `http://localhost:4173`.
+
+## Content
+
+Portfolio content is maintained in [`data/portfolio-data.js`](data/portfolio-data.js):
+
+- `projects` controls featured and additional projects.
+- `experience` contains formal professional roles.
+- `community` contains volunteering, leadership, and hackathon participation.
+- `skills` controls the categorized technology collection.
+
+Optional fields such as GitHub and live URLs are only rendered when they contain real values.
+
+## Deployment
+
+The repository is linked to the Vercel project `ishaq-portfolio`. Vercel serves the repository as a static site, so no framework preset or build command is required.
+
+Production changes should be reviewed on a preview deployment before promoting them to the production branch.
