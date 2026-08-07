@@ -1,1 +1,10 @@
 .vercel
+.env
+.env.*
+!.env.example
+node_modules/
+playwright-report/
+test-results/
+tmp/
+.DS_Store
+Thumbs.db

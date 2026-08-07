@@ -3,43 +3,46 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Ishaq Nasiru | Software Developer</title>
+    <title>Ishaq Nasiru | Computer Science Student &amp; Software Developer</title>
     <meta
       name="description"
-      content="Portfolio of Ishaq Nasiru, a Computer Science student and software developer building AI, IoT, mobile, and full-stack products."
+      content="Portfolio of Ishaq Nasiru, a Computer Science student and software developer building software, embedded systems, IoT projects, AI tools, and real-world technical solutions."
     />
     <meta name="author" content="Ishaq Ishaq Nasiru" />
-    <meta name="theme-color" content="#f7fbff" media="(prefers-color-scheme: light)" />
-    <meta name="theme-color" content="#071622" media="(prefers-color-scheme: dark)" />
-    <meta property="og:title" content="Ishaq Nasiru | Software Developer" />
+    <meta name="theme-color" content="#f5f8f2" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#080d16" media="(prefers-color-scheme: dark)" />
+    <link rel="canonical" href="https://ameer-sys.github.io/ishaq-portfolio/" />
+    <meta property="og:title" content="Ishaq Nasiru | Computer Science Student &amp; Software Developer" />
     <meta
       property="og:description"
-      content="Selected software, AI, IoT, mobile, and community work by Ishaq Nasiru."
+      content="Software, embedded systems, IoT, mobile, AI, and community work by Ishaq Nasiru."
     />
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://ishaq-portfolio-flame.vercel.app/" />
+    <meta property="og:url" content="https://ameer-sys.github.io/ishaq-portfolio/" />
+    <meta property="og:site_name" content="Ishaq Nasiru Portfolio" />
     <meta
       property="og:image"
-      content="https://ishaq-portfolio-flame.vercel.app/assets/og-card.png"
+      content="https://ameer-sys.github.io/ishaq-portfolio/assets/og-card.png"
     />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta
       property="og:image:alt"
-      content="Ishaq Nasiru portfolio preview with an ocean scene and the Golden Sunny"
+      content="Ishaq Nasiru portfolio preview with a voxel landscape and digital ocean"
     />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Ishaq Nasiru | Software Developer" />
+    <meta name="twitter:title" content="Ishaq Nasiru | Computer Science Student &amp; Software Developer" />
     <meta
       name="twitter:description"
-      content="Selected software, AI, IoT, mobile, and community work by Ishaq Nasiru."
+      content="Software, embedded systems, IoT, mobile, AI, and community work by Ishaq Nasiru."
     />
     <meta
       name="twitter:image"
-      content="https://ishaq-portfolio-flame.vercel.app/assets/og-card.png"
+      content="https://ameer-sys.github.io/ishaq-portfolio/assets/og-card.png"
     />
     <meta name="twitter:image:alt" content="Ishaq Nasiru portfolio preview" />
     <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="assets/apple-touch-icon.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -58,26 +61,27 @@
   <body>
     <a class="skip-link" href="#main">Skip to content</a>
 
-    <div class="sky-shell" aria-hidden="true">
-      <div class="sun"></div>
-      <div class="cloud cloud-one"></div>
-      <div class="cloud cloud-two"></div>
-      <div class="cloud cloud-three"></div>
-      <div class="cloud cloud-four"></div>
-      <div class="cloud cloud-five"></div>
-      <div class="wave wave-back"></div>
-      <div class="wave wave-front"></div>
+    <div class="world-backdrop" aria-hidden="true">
+      <div class="pixel-sun"></div>
+      <div class="block-cloud block-cloud-one"></div>
+      <div class="block-cloud block-cloud-two"></div>
+      <div class="block-cloud block-cloud-three"></div>
+      <div class="block-cloud block-cloud-four"></div>
+      <div class="block-cloud block-cloud-five"></div>
+      <div class="world-particles"></div>
     </div>
 
-    <header class="site-header">
+    <header class="site-header" id="siteHeader">
       <a class="brand" href="#home" aria-label="Ishaq Nasiru, go to home">
         <span class="brand-mark" aria-hidden="true">IN</span>
         <span>Ishaq Nasiru</span>
       </a>
-      <nav class="nav-links" aria-label="Primary navigation">
+      <nav class="nav-links" id="primaryNavigation" aria-label="Primary navigation">
+        <a href="#home">Home</a>
+        <a href="#about">About</a>
         <a href="#projects">Projects</a>
         <a href="#experience">Experience</a>
-        <a href="#tools">Tools</a>
+        <a href="#tools">Skills</a>
         <a href="#community">Community</a>
         <a href="#contact">Contact</a>
       </nav>
@@ -109,29 +113,38 @@
             <path d="M4 8h10a3 3 0 1 0-3-3M4 12h15a3 3 0 1 1-3 3M4 16h7"></path>
           </svg>
         </button>
+        <button
+          class="icon-button menu-button"
+          id="menuToggle"
+          type="button"
+          aria-label="Open navigation menu"
+          aria-controls="primaryNavigation"
+          aria-expanded="false"
+        >
+          <span></span><span></span><span></span>
+        </button>
       </div>
     </header>
 
     <main id="main">
       <section class="hero section" id="home">
         <div class="hero-copy reveal">
-          <p class="eyebrow pixel-label">Computer Science + Software Development</p>
-          <h1>Ishaq Nasiru</h1>
+          <p class="eyebrow pixel-label">Software / Hardware / AI / IoT</p>
+          <h1>I build digital experiences and <span>real-world solutions.</span></h1>
           <p class="hero-text">
-            I build practical products across software, AI, mobile, and embedded systems,
-            with enough personality to make the work memorable.
+            I'm Ishaq Nasiru, a Computer Science student and software developer working
+            across applications, embedded systems, IoT, AI tools, and connected hardware.
           </p>
           <div class="hero-actions">
-            <a class="button primary" href="#projects">Explore Projects</a>
+            <a class="button primary" href="#projects">View My Work</a>
             <a
               class="button secondary"
               href="assets/ishaq-nasiru-resume.pdf"
-              target="_blank"
-              rel="noopener noreferrer"
+              download="Ishaq-Nasiru-Resume.pdf"
             >
-              View Resume
+              Download Resume
             </a>
-            <a class="button ghost" href="#contact">Get in Touch</a>
+            <a class="button ghost" href="#contact">Let's Connect</a>
           </div>
           <dl class="quick-stats" aria-label="Portfolio highlights">
             <div>
@@ -139,8 +152,8 @@
               <dd>Useful, human-centered technology</dd>
             </div>
             <div>
-              <dt>Current waters</dt>
-              <dd>AI, IoT, mobile, and full-stack systems</dd>
+              <dt>Build range</dt>
+              <dd>AI, IoT, mobile, embedded, and full-stack</dd>
             </div>
             <div>
               <dt>Based in</dt>
@@ -148,18 +161,16 @@
             </div>
           </dl>
         </div>
-        <div class="hero-scene reveal" aria-label="Golden Sunny sailing through a calm digital sea">
+        <div class="hero-art reveal">
+          <img
+            src="assets/ishaq-voxel-hero.webp"
+            alt="Voxel artwork of Ishaq in a blue hoodie holding a glowing device beside a digital ocean"
+            fetchpriority="high"
+          />
           <div class="scene-note">
-            <span class="pixel-label">NOW BUILDING</span>
-            <strong>Technology that leaves the screen and helps in real life.</strong>
+            <span class="pixel-label">CURRENT QUEST</span>
+            <strong>Building technology that leaves the screen and helps in real life.</strong>
           </div>
-          <div class="ship" id="ship" aria-hidden="true">
-            <div class="sail sail-main"></div>
-            <div class="sail sail-side"></div>
-            <div class="mast"></div>
-            <div class="hull"></div>
-          </div>
-          <span class="scene-label">Golden Sunny</span>
         </div>
       </section>
 
@@ -171,15 +182,16 @@
               <h2>Curious by default. Practical on purpose.</h2>
             </div>
             <p class="about-copy">
-              I study Computer Science at Conestoga College and enjoy building across the
-              boundary between software and the physical world. My strongest work turns a
-              real problem into a clear system: understand it, prototype it, test it, and
-              keep improving.
+              I'm a Computer Science student at Conestoga College who enjoys turning ideas
+              into real-world systems. My projects range from mobile and web applications to
+              embedded devices, IoT systems, AI tools, and robotics. I learn by building,
+              collaborating, and solving tangible problems.
             </p>
             <div class="about-tags" aria-label="About Ishaq">
-              <span>Conestoga College</span>
+              <span>Bachelor of Computer Science (Honours)</span>
+              <span>Conestoga College / Sept 2024 - Present</span>
               <span>Waterloo, Ontario</span>
-              <span>Open to internships</span>
+              <span>Expected graduation: 2028</span>
               <span>Builder + community contributor</span>
             </div>
           </div>
@@ -201,11 +213,11 @@
         <div class="section-heading reveal section-heading-split">
           <div>
             <p class="eyebrow pixel-label">Selected Work</p>
-            <h2>Projects with real depth.</h2>
+            <h2>Flagship builds and technical experiments.</h2>
           </div>
           <p class="section-intro">
-            Hardware, software, and AI projects chosen for their technical range,
-            problem-solving, and finished-product thinking.
+            Selected for real technical depth: working hardware, useful software,
+            thoughtful interfaces, and systems built under pressure.
           </p>
         </div>
 
@@ -216,16 +228,27 @@
           <h3>Additional projects</h3>
         </div>
         <div class="project-additional" id="additionalProjects"></div>
+        <div class="project-more-actions reveal">
+          <button
+            class="button secondary"
+            id="toggleProjects"
+            type="button"
+            aria-expanded="false"
+            aria-controls="additionalProjects"
+          >
+            View More Projects
+          </button>
+        </div>
       </section>
 
       <section class="section experience" id="experience">
         <div class="section-heading reveal section-heading-split">
           <div>
-            <p class="eyebrow pixel-label">Professional Experience</p>
-            <h2>Work beyond the classroom.</h2>
+            <p class="eyebrow pixel-label">Experience &amp; Leadership</p>
+            <h2>Formal roles and real responsibility.</h2>
           </div>
           <p class="section-intro">
-            Formal roles are kept separate from hackathons, projects, and community work.
+            Board and leadership work, kept separate from hackathons and personal projects.
           </p>
         </div>
         <div class="experience-list" id="experienceList"></div>
@@ -235,11 +258,11 @@
         <div class="section-heading reveal section-heading-split">
           <div>
             <p class="eyebrow pixel-label">Collected Pieces</p>
-            <h2>Tools I use and keep learning.</h2>
+            <h2>My working inventory.</h2>
           </div>
           <p class="section-intro">
-            Hover or focus a piece for context. These are technologies used in projects,
-            coursework, and active exploration.
+            Languages, frameworks, hardware, and tools collected through projects,
+            coursework, flight tests, and active exploration.
           </p>
         </div>
         <div class="skill-shelves" id="skillsList"></div>
@@ -372,7 +395,7 @@
           <form
             class="contact-form"
             id="contactForm"
-            action="https://formsubmit.co/ajax/ishaqnasiru29@gmail.com"
+            action="https://formsubmit.co/ajax/inasiru3540@conestogac.on.ca"
             method="post"
           >
             <input type="hidden" name="_subject" value="New portfolio message" />
@@ -393,11 +416,12 @@
               <button class="button primary send-button" id="sendMessageButton" type="submit">
                 Send Message
               </button>
-              <a class="button ghost" href="mailto:ishaqnasiru29@gmail.com">Email</a>
+              <a class="button ghost" href="mailto:inasiru3540@conestogac.on.ca">Email</a>
             </div>
             <p class="form-status" id="formStatus" aria-live="polite"></p>
           </form>
           <div class="direct-links">
+            <a href="mailto:inasiru3540@conestogac.on.ca">Email</a>
             <a href="https://github.com/Ameer-sys" target="_blank" rel="noopener noreferrer">GitHub</a>
             <a
               href="https://www.linkedin.com/in/ishaq-ishaq-nasiru"

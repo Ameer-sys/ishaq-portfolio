@@ -4,12 +4,20 @@ const deviconBase = "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/"
 
 const themeToggle = document.querySelector("#themeToggle");
 const calmModeButton = document.querySelector("#calmMode");
+const siteHeader = document.querySelector("#siteHeader");
+const menuToggle = document.querySelector("#menuToggle");
+const primaryNavigation = document.querySelector("#primaryNavigation");
+const navigationLinks = [...document.querySelectorAll("#primaryNavigation a")];
+const navigationSections = navigationLinks
+  .map((link) => document.querySelector(link.getAttribute("href")))
+  .filter(Boolean);
 const ship = document.querySelector("#ship");
 const featuredProjects = document.querySelector("#featuredProjects");
 const additionalProjects = document.querySelector("#additionalProjects");
 const experienceList = document.querySelector("#experienceList");
 const communityList = document.querySelector("#communityList");
 const skillsList = document.querySelector("#skillsList");
+const toggleProjectsButton = document.querySelector("#toggleProjects");
 const currentYear = document.querySelector("#currentYear");
 const contactForm = document.querySelector("#contactForm");
 const formStatus = document.querySelector("#formStatus");
@@ -66,6 +74,11 @@ function projectVisual(project) {
     smadium: '<div class="stadium-rings" aria-hidden="true"></div>',
     drivetracker: '<div class="phone-frame" aria-hidden="true"></div>',
     robot: '<div class="robot-orbit" aria-hidden="true"></div>',
+    drone: '<div class="drone-frame" aria-hidden="true"><span></span><span></span><span></span><span></span></div>',
+    blockbuilt: '<div class="blockbuilt-mark" aria-hidden="true"><span></span><span></span><span></span></div>',
+    radarcare: '<div class="radar-rings" aria-hidden="true"><span></span></div>',
+    doxyq: '<div class="doxyq-lines" aria-hidden="true"><span>/**</span><span>* docs</span><span>*/</span></div>',
+    campusio: '<div class="campus-blocks" aria-hidden="true"><span></span><span></span><span></span></div>',
   };
 
   return `
@@ -114,7 +127,7 @@ function projectCard(project, index, primary = false) {
         <h3>${escapeHtml(project.title)}</h3>
         <p class="project-summary">${escapeHtml(project.shortDescription)}</p>
         ${
-          project.fullDescription
+          project.fullDescription && project.featured
             ? `<p class="project-summary">${escapeHtml(project.fullDescription)}</p>`
             : ""
         }
@@ -164,8 +177,17 @@ function renderProjects() {
     .map((project, index) => projectCard(project, index, index === 0))
     .join("");
   additionalProjects.innerHTML = additional
-    .map((project, index) => projectCard(project, featured.length + index))
+    .map(
+      (project, index) =>
+        `<div class="additional-project${index >= 3 ? " additional-project-hidden" : ""}">${projectCard(
+          project,
+          featured.length + index
+        )}</div>`
+    )
     .join("");
+
+  if (!toggleProjectsButton) return;
+  toggleProjectsButton.hidden = additional.length <= 3;
 }
 
 function renderExperience() {
@@ -177,6 +199,7 @@ function renderExperience() {
           <div>
             <h3>${escapeHtml(item.organization)}</h3>
             <strong>${escapeHtml(item.title)}</strong>
+            ${item.location ? `<span class="experience-location">${escapeHtml(item.location)}</span>` : ""}
             <p>${escapeHtml(item.description)}</p>
           </div>
         </article>
@@ -241,6 +264,13 @@ function renderPortfolioContent() {
   currentYear.textContent = new Date().getFullYear();
 }
 
+function toggleAdditionalProjects() {
+  const isExpanded = toggleProjectsButton.getAttribute("aria-expanded") === "true";
+  additionalProjects.classList.toggle("show-all-projects", !isExpanded);
+  toggleProjectsButton.setAttribute("aria-expanded", String(!isExpanded));
+  toggleProjectsButton.textContent = isExpanded ? "View More Projects" : "Show Fewer Projects";
+}
+
 function currentTheme() {
   return document.documentElement.dataset.theme === "dark" ? "dark" : "light";
 }
@@ -277,15 +307,81 @@ calmModeButton.addEventListener("click", () => {
   calmModeButton.setAttribute("title", isCalm ? "Restore motion" : "Reduce motion");
 });
 
+function closeNavigation() {
+  primaryNavigation.classList.remove("open");
+  menuToggle.setAttribute("aria-expanded", "false");
+  menuToggle.setAttribute("aria-label", "Open navigation menu");
+  document.body.classList.remove("menu-open");
+}
+
+function toggleNavigation() {
+  const isOpen = !primaryNavigation.classList.contains("open");
+  primaryNavigation.classList.toggle("open", isOpen);
+  menuToggle.setAttribute("aria-expanded", String(isOpen));
+  menuToggle.setAttribute("aria-label", isOpen ? "Close navigation menu" : "Open navigation menu");
+  document.body.classList.toggle("menu-open", isOpen);
+}
+
+function setActiveNavigation(sectionId) {
+  navigationLinks.forEach((link) => {
+    const isActive = link.getAttribute("href") === `#${sectionId}`;
+    link.classList.toggle("active", isActive);
+    if (isActive) link.setAttribute("aria-current", "location");
+    else link.removeAttribute("aria-current");
+  });
+}
+
+function initializeNavigation() {
+  menuToggle.addEventListener("click", toggleNavigation);
+  navigationLinks.forEach((link) => link.addEventListener("click", closeNavigation));
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") closeNavigation();
+  });
+
+  window.addEventListener("resize", () => {
+    if (window.innerWidth > 960) closeNavigation();
+  });
+
+  if (!("IntersectionObserver" in window)) {
+    setActiveNavigation("home");
+    return;
+  }
+
+  const visibleSections = new Map();
+  const sectionObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) visibleSections.set(entry.target.id, entry.intersectionRatio);
+        else visibleSections.delete(entry.target.id);
+      });
+
+      const current = [...visibleSections.entries()].sort((a, b) => b[1] - a[1])[0];
+      if (current) setActiveNavigation(current[0]);
+    },
+    { rootMargin: "-18% 0px -62% 0px", threshold: [0.05, 0.2, 0.45] }
+  );
+
+  navigationSections.forEach((section) => sectionObserver.observe(section));
+  setActiveNavigation("home");
+}
+
+function syncHeaderState() {
+  siteHeader.classList.toggle("scrolled", window.scrollY > 24);
+}
+
 window.addEventListener(
   "scroll",
   () => {
+    syncHeaderState();
     if (!ship || document.body.classList.contains("calm")) return;
     const travel = Math.min(window.scrollY * 0.06, 44);
     ship.style.translate = `${travel}px 0`;
   },
   { passive: true }
 );
+
+syncHeaderState();
 
 function initializeRevealAnimations() {
   const revealItems = document.querySelectorAll(".reveal");
@@ -649,9 +745,11 @@ async function submitContactForm(event) {
 }
 
 renderPortfolioContent();
+initializeNavigation();
 initializeRevealAnimations();
 resetGame();
 drawGame();
 
 startButton.addEventListener("click", startGame);
 contactForm.addEventListener("submit", submitContactForm);
+toggleProjectsButton?.addEventListener("click", toggleAdditionalProjects);

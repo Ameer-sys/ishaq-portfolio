@@ -1,30 +1,53 @@
 # Ishaq Nasiru Portfolio
 
-A responsive, framework-free portfolio for Ishaq Nasiru, built with semantic HTML, modern CSS, and vanilla JavaScript. The site highlights software, embedded systems, community involvement, and a small playable ocean game.
+A responsive portfolio for Ishaq Nasiru, a Computer Science student and software developer building software, embedded systems, IoT projects, AI tools, and real-world technical solutions.
 
-## Local Development
+![Voxel ocean portfolio preview](assets/ishaq-voxel-hero.webp)
 
-The site does not require a build step.
+## Live Site
+
+[ameer-sys.github.io/ishaq-portfolio](https://ameer-sys.github.io/ishaq-portfolio/)
+
+## Technology
+
+- Semantic HTML5
+- Modern responsive CSS with light and dark themes
+- Vanilla JavaScript
+- Canvas API for the Golden Sunny mini-game
+- FormSubmit for the static contact form
+- GitHub Pages for production hosting
+
+## Run Locally
+
+No build step is required.
 
 ```powershell
 python -m http.server 4173
 ```
 
-Open `http://localhost:4173`.
+Open `http://127.0.0.1:4173`.
 
-## Content
+## Project Structure
 
-Portfolio content is maintained in [`data/portfolio-data.js`](data/portfolio-data.js):
+```text
+assets/                    Images, icons, gallery media, and resume
+data/portfolio-data.js     Projects, experience, community, and skills
+scripts/verify-browser.cjs Playwright browser verification
+index.html                 Semantic page structure and metadata
+script.js                  Rendering, theme, navigation, form, and game logic
+styles.css                 Layout, themes, responsive design, and motion
+```
 
-- `projects` controls featured and additional projects.
-- `experience` contains formal professional roles.
-- `community` contains volunteering, leadership, and hackathon participation.
-- `skills` controls the categorized technology collection.
+## Content Maintenance
 
-Optional fields such as GitHub and live URLs are only rendered when they contain real values.
+Portfolio entries are centralized in `data/portfolio-data.js`. Optional fields such as GitHub and live URLs render only when real values are present. Project status labels distinguish completed work, prototypes, active development, and concepts.
 
 ## Deployment
 
-The repository is linked to the Vercel project `ishaq-portfolio`. Vercel serves the repository as a static site, so no framework preset or build command is required.
+The static site is published from the `gh-pages` branch. All production asset references use repository-relative paths so the site works at the GitHub project Pages URL. The `.nojekyll` marker keeps GitHub Pages from applying Jekyll processing.
 
-Production changes should be reviewed on a preview deployment before promoting them to the production branch.
+The previous Vercel project remains available temporarily as a fallback while the GitHub Pages deployment is verified.
+
+## Contact Form
+
+The contact form submits directly from the browser to FormSubmit and does not depend on Vercel serverless functions. FormSubmit may require a one-time email activation before first use.
