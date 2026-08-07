@@ -6,7 +6,7 @@
   <rect x="8" y="44" width="16" height="4" fill="#7dd3e8"/>
   <rect x="32" y="48" width="24" height="4" fill="#7dd3e8"/>
   <rect x="44" y="10" width="10" height="10" fill="#f6c945"/>
-  <path d="M14 16h7v25h-7zm12 0h7v25h-7zm12 0h7v7h-7zm0 11h7v14h-7z" fill="#f8fbf5"/>
+  <path d="M10 17h11v4h-3v18h3v4H10v-4h3V21h-3zm15 0h11v4h-3v18h3v4H25v-4h3V21h-3zm15 0h5l7 15V17h5v26h-5l-7-15v15h-5z" fill="#f8fbf5"/>
   <rect x="20" y="8" width="16" height="4" fill="#77c64a"/>
   <rect x="4" y="4" width="4" height="16" fill="#77c64a"/>
   <rect x="56" y="44" width="4" height="16" fill="#77c64a"/>

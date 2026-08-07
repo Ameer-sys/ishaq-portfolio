@@ -1,6 +1,6 @@
-# Ishaq Nasiru Portfolio
+# Ishaq Ishaq Nasiru Portfolio
 
-A responsive portfolio for Ishaq Nasiru, a Computer Science student and software developer building software, embedded systems, IoT projects, AI tools, and real-world technical solutions.
+A responsive portfolio for Ishaq Ishaq Nasiru, a Computer Science student and software developer building software, embedded systems, IoT projects, AI tools, and real-world technical solutions.
 
 ![Voxel ocean portfolio preview](assets/ishaq-voxel-hero.webp)
 
@@ -30,7 +30,7 @@ Open `http://127.0.0.1:4173`.
 ## Project Structure
 
 ```text
-assets/                    Images, icons, gallery media, and resume
+assets/                    Brand images, project visuals, icons, and resume
 data/portfolio-data.js     Projects, experience, community, and skills
 scripts/verify-browser.cjs Playwright browser verification
 index.html                 Semantic page structure and metadata

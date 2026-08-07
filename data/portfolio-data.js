@@ -248,11 +248,19 @@ window.portfolioData = {
   ],
   community: [
     {
-      organization: "IT Club, Conestoga College",
-      title: "Student Club Lead / Executive",
+      organization: "eCampusOntario",
+      title: "Board of Directors - Student Representative",
+      location: "Ontario, Canada",
+      date: "April 2026 - Present",
+      description:
+        "Serve as a student representative on the eCampusOntario Board of Directors, contribute a college-student perspective to digital-learning discussions, and participate in strategic conversations about innovation, accessibility, and technology-enabled education in Ontario.",
+    },
+    {
+      organization: "IT Club - Conestoga College",
+      title: "President",
       date: "September 2025 - Present",
       description:
-        "Organize workshops and campus events, collaborate with club executives, design promotional materials, support beginner-friendly sessions, and help coordinate event delivery and student engagement.",
+        "Lead the club and executive team after previously serving as Secretary. Help organize technical workshops, student events, campus engagement, promotional planning, volunteer communication, and collaboration with other campus groups.",
     },
     {
       organization: "GDG Waterloo",
@@ -263,10 +271,17 @@ window.portfolioData = {
     },
     {
       organization: "HackCanada",
-      title: "Hackathon participant",
+      title: "Volunteer",
       date: "March 2026",
       description:
-        "Collaborated with a team to develop and present a functional software prototype under hackathon time constraints.",
+        "Supported the hackathon community and event experience as a volunteer, helping the event run smoothly for participants and organizers.",
+    },
+    {
+      organization: "ConHacks",
+      title: "Hackathon Participant",
+      date: "2024 & 2025",
+      description:
+        "Participated in ConHacks twice. Returned in 2025 to collaborate on LegalAI, an AI-powered information assistant focused on Ontario landlord and tenant resources.",
     },
   ],
   skills: [

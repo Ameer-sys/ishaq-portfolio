@@ -7,6 +7,7 @@ const calmModeButton = document.querySelector("#calmMode");
 const siteHeader = document.querySelector("#siteHeader");
 const menuToggle = document.querySelector("#menuToggle");
 const primaryNavigation = document.querySelector("#primaryNavigation");
+const navigationIndicator = document.querySelector("#navIndicator");
 const navigationLinks = [...document.querySelectorAll("#primaryNavigation a")];
 const navigationSections = navigationLinks
   .map((link) => document.querySelector(link.getAttribute("href")))
@@ -216,6 +217,7 @@ function renderCommunity() {
           <time>${escapeHtml(item.date)}</time>
           <h3>${escapeHtml(item.organization)}</h3>
           <strong>${escapeHtml(item.title)}</strong>
+          ${item.location ? `<span class="timeline-location">${escapeHtml(item.location)}</span>` : ""}
           <p>${escapeHtml(item.description)}</p>
         </article>
       `
@@ -228,7 +230,10 @@ function renderSkills() {
     .map(
       (group) => `
         <section class="skill-shelf reveal" aria-label="${escapeHtml(group.category)}">
-          <h3 class="pixel-label">${escapeHtml(group.category)}</h3>
+          <header class="skill-shelf-header">
+            <h3 class="pixel-label">${escapeHtml(group.category)}</h3>
+            <span>${group.items.length} collected</span>
+          </header>
           <div class="skill-grid">
             ${group.items
               .map((item) => {
@@ -329,6 +334,19 @@ function setActiveNavigation(sectionId) {
     if (isActive) link.setAttribute("aria-current", "location");
     else link.removeAttribute("aria-current");
   });
+  window.requestAnimationFrame(positionNavigationIndicator);
+}
+
+function positionNavigationIndicator() {
+  if (!navigationIndicator || window.innerWidth <= 960) return;
+  const activeLink = navigationLinks.find((link) => link.classList.contains("active"));
+  if (!activeLink) return;
+
+  const navigationRect = primaryNavigation.getBoundingClientRect();
+  const linkRect = activeLink.getBoundingClientRect();
+  navigationIndicator.style.width = `${linkRect.width}px`;
+  navigationIndicator.style.transform = `translateX(${linkRect.left - navigationRect.left}px)`;
+  navigationIndicator.classList.add("visible");
 }
 
 function initializeNavigation() {
@@ -341,6 +359,7 @@ function initializeNavigation() {
 
   window.addEventListener("resize", () => {
     if (window.innerWidth > 960) closeNavigation();
+    window.requestAnimationFrame(positionNavigationIndicator);
   });
 
   if (!("IntersectionObserver" in window)) {
@@ -364,6 +383,7 @@ function initializeNavigation() {
 
   navigationSections.forEach((section) => sectionObserver.observe(section));
   setActiveNavigation("home");
+  document.fonts?.ready.then(positionNavigationIndicator);
 }
 
 function syncHeaderState() {
