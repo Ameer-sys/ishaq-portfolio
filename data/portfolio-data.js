@@ -190,21 +190,6 @@ window.portfolioData = {
       ],
     },
     {
-      title: "Campusio",
-      shortDescription:
-        "A student campus companion concept focused on bringing deadlines, events, clubs, and opportunities into one place.",
-      fullDescription:
-        "The idea initially focuses on Conestoga students and the problem of useful campus information being fragmented across platforms and channels.",
-      technologies: ["Product Design", "Student Experience", "Mobile Concept"],
-      role: "Product concept and development",
-      date: "Concept - 2026",
-      category: "additional",
-      featured: false,
-      projectStatus: "Concept / in development",
-      visual: "campusio",
-      keyFeatures: ["Deadlines and tasks", "Campus events and clubs", "Opportunity discovery"],
-    },
-    {
       title: "DriveTracker",
       shortDescription:
         "A mobile driving analytics app that turns GPS-based trip data into scores, trends, and visual feedback.",
@@ -234,16 +219,6 @@ window.portfolioData = {
       projectStatus: "Completed academic project",
       visual: "smadium",
       keyFeatures: ["Three-layer architecture", "Role-based access", "Sensor simulation"],
-    },
-  ],
-  experience: [
-    {
-      organization: "eCampusOntario",
-      title: "Board of Directors - Student Representative",
-      location: "Ontario, Canada",
-      date: "April 2026 - Present",
-      description:
-        "Serve as a college student representative on the Board of Directors, contributing a student perspective to strategic discussions about innovation, accessibility, digital learning, and technology-enabled education across Ontario's postsecondary sector.",
     },
   ],
   community: [
@@ -279,9 +254,9 @@ window.portfolioData = {
     {
       organization: "ConHacks",
       title: "Hackathon Participant",
-      date: "2024 & 2025",
+      date: "2025 & 2026",
       description:
-        "Participated in ConHacks twice. Returned in 2025 to collaborate on LegalAI, an AI-powered information assistant focused on Ontario landlord and tenant resources.",
+        "Participated in ConHacks twice, building LegalAI in 2025 and Naftelia in 2026 while collaborating with teams to design, build, and present functional hackathon prototypes.",
     },
   ],
   skills: [

@@ -4,6 +4,7 @@ const deviconBase = "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/"
 
 const themeToggle = document.querySelector("#themeToggle");
 const calmModeButton = document.querySelector("#calmMode");
+const heroName = document.querySelector(".hero-name");
 const siteHeader = document.querySelector("#siteHeader");
 const menuToggle = document.querySelector("#menuToggle");
 const primaryNavigation = document.querySelector("#primaryNavigation");
@@ -12,10 +13,11 @@ const navigationLinks = [...document.querySelectorAll("#primaryNavigation a")];
 const navigationSections = navigationLinks
   .map((link) => document.querySelector(link.getAttribute("href")))
   .filter(Boolean);
+let activeNavigationId = "";
+let navigationSyncFrame = 0;
 const ship = document.querySelector("#ship");
 const featuredProjects = document.querySelector("#featuredProjects");
 const additionalProjects = document.querySelector("#additionalProjects");
-const experienceList = document.querySelector("#experienceList");
 const communityList = document.querySelector("#communityList");
 const skillsList = document.querySelector("#skillsList");
 const toggleProjectsButton = document.querySelector("#toggleProjects");
@@ -44,7 +46,7 @@ let boosts;
 
 const techItems = ["AI", "C#", "Py", "JS", "SQL", "API", "Git", "UX", "C++", "IoT"];
 const funnyHits = [
-  "Golden Sunny clipped a rock. Course corrected.",
+  "The stack clipped a rock. Course corrected.",
   "Tiny crash. Strong recovery.",
   "Navigation is recalculating with confidence.",
   "That rock was unusually committed.",
@@ -57,6 +59,16 @@ function escapeHtml(value) {
     .replaceAll(">", "&gt;")
     .replaceAll('"', "&quot;")
     .replaceAll("'", "&#039;");
+}
+
+function initializeHeroNameAnimation() {
+  if (!heroName || !("IntersectionObserver" in window)) return;
+
+  const observer = new IntersectionObserver(
+    ([entry]) => heroName.classList.toggle("is-paused", !entry.isIntersecting),
+    { threshold: 0.08 }
+  );
+  observer.observe(heroName);
 }
 
 function projectVisual(project) {
@@ -79,7 +91,6 @@ function projectVisual(project) {
     blockbuilt: '<div class="blockbuilt-mark" aria-hidden="true"><span></span><span></span><span></span></div>',
     radarcare: '<div class="radar-rings" aria-hidden="true"><span></span></div>',
     doxyq: '<div class="doxyq-lines" aria-hidden="true"><span>/**</span><span>* docs</span><span>*/</span></div>',
-    campusio: '<div class="campus-blocks" aria-hidden="true"><span></span><span></span><span></span></div>',
   };
 
   return `
@@ -191,24 +202,6 @@ function renderProjects() {
   toggleProjectsButton.hidden = additional.length <= 3;
 }
 
-function renderExperience() {
-  experienceList.innerHTML = data.experience
-    .map(
-      (item) => `
-        <article class="experience-card reveal">
-          <time class="experience-date">${escapeHtml(item.date)}</time>
-          <div>
-            <h3>${escapeHtml(item.organization)}</h3>
-            <strong>${escapeHtml(item.title)}</strong>
-            ${item.location ? `<span class="experience-location">${escapeHtml(item.location)}</span>` : ""}
-            <p>${escapeHtml(item.description)}</p>
-          </div>
-        </article>
-      `
-    )
-    .join("");
-}
-
 function renderCommunity() {
   communityList.innerHTML = data.community
     .map(
@@ -263,7 +256,6 @@ function renderSkills() {
 
 function renderPortfolioContent() {
   renderProjects();
-  renderExperience();
   renderCommunity();
   renderSkills();
   currentYear.textContent = new Date().getFullYear();
@@ -328,6 +320,12 @@ function toggleNavigation() {
 }
 
 function setActiveNavigation(sectionId) {
+  if (!sectionId || sectionId === activeNavigationId) {
+    window.requestAnimationFrame(positionNavigationIndicator);
+    return;
+  }
+
+  activeNavigationId = sectionId;
   navigationLinks.forEach((link) => {
     const isActive = link.getAttribute("href") === `#${sectionId}`;
     link.classList.toggle("active", isActive);
@@ -349,6 +347,42 @@ function positionNavigationIndicator() {
   navigationIndicator.classList.add("visible");
 }
 
+function getNavigationActivationOffset() {
+  const headerBottom = siteHeader?.getBoundingClientRect().bottom || 0;
+  const documentScrollPadding =
+    Number.parseFloat(getComputedStyle(document.documentElement).scrollPaddingTop) || 0;
+  const sectionScrollMargin = navigationSections[0]
+    ? Number.parseFloat(getComputedStyle(navigationSections[0]).scrollMarginTop) || 0
+    : 0;
+
+  return Math.max(headerBottom, documentScrollPadding + sectionScrollMargin) + 1;
+}
+
+function syncActiveNavigation() {
+  navigationSyncFrame = 0;
+  if (!navigationSections.length) return;
+
+  const activationPosition = window.scrollY + getNavigationActivationOffset();
+  let activeSection = navigationSections[0];
+
+  navigationSections.forEach((section) => {
+    if (section.offsetTop <= activationPosition) activeSection = section;
+  });
+
+  const pageBottom = window.scrollY + window.innerHeight;
+  const documentBottom = document.documentElement.scrollHeight;
+  if (pageBottom >= documentBottom - 2) {
+    activeSection = navigationSections.at(-1);
+  }
+
+  setActiveNavigation(activeSection.id);
+}
+
+function scheduleActiveNavigationSync() {
+  if (navigationSyncFrame) return;
+  navigationSyncFrame = window.requestAnimationFrame(syncActiveNavigation);
+}
+
 function initializeNavigation() {
   menuToggle.addEventListener("click", toggleNavigation);
   navigationLinks.forEach((link) => link.addEventListener("click", closeNavigation));
@@ -359,31 +393,14 @@ function initializeNavigation() {
 
   window.addEventListener("resize", () => {
     if (window.innerWidth > 960) closeNavigation();
-    window.requestAnimationFrame(positionNavigationIndicator);
+    scheduleActiveNavigationSync();
   });
 
-  if (!("IntersectionObserver" in window)) {
-    setActiveNavigation("home");
-    return;
-  }
-
-  const visibleSections = new Map();
-  const sectionObserver = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) visibleSections.set(entry.target.id, entry.intersectionRatio);
-        else visibleSections.delete(entry.target.id);
-      });
-
-      const current = [...visibleSections.entries()].sort((a, b) => b[1] - a[1])[0];
-      if (current) setActiveNavigation(current[0]);
-    },
-    { rootMargin: "-18% 0px -62% 0px", threshold: [0.05, 0.2, 0.45] }
-  );
-
-  navigationSections.forEach((section) => sectionObserver.observe(section));
-  setActiveNavigation("home");
-  document.fonts?.ready.then(positionNavigationIndicator);
+  window.addEventListener("scroll", scheduleActiveNavigationSync, { passive: true });
+  window.addEventListener("hashchange", scheduleActiveNavigationSync);
+  window.addEventListener("pageshow", scheduleActiveNavigationSync);
+  document.fonts?.ready.then(scheduleActiveNavigationSync);
+  scheduleActiveNavigationSync();
 }
 
 function syncHeaderState() {
@@ -445,18 +462,55 @@ touchButtons.forEach((button) => {
 
   const press = (event) => {
     event.preventDefault();
+    try {
+      button.setPointerCapture?.(event.pointerId);
+    } catch {
+      // Synthetic pointer events used by automated checks do not own a browser pointer.
+    }
     keys.add(key);
+    button.classList.add("is-pressed");
+    button.setAttribute("aria-pressed", "true");
   };
 
   const release = (event) => {
     event.preventDefault();
     keys.delete(key);
+    button.classList.remove("is-pressed");
+    button.setAttribute("aria-pressed", "false");
   };
 
+  button.setAttribute("aria-pressed", "false");
   button.addEventListener("pointerdown", press);
   button.addEventListener("pointerup", release);
   button.addEventListener("pointercancel", release);
-  button.addEventListener("pointerleave", release);
+  button.addEventListener("lostpointercapture", release);
+  button.addEventListener("keydown", (event) => {
+    if (!['Enter', ' '].includes(event.key) || event.repeat) return;
+    press(event);
+  });
+  button.addEventListener("keyup", (event) => {
+    if (!['Enter', ' '].includes(event.key)) return;
+    release(event);
+  });
+  button.addEventListener("blur", () => {
+    keys.delete(key);
+    button.classList.remove("is-pressed");
+    button.setAttribute("aria-pressed", "false");
+  });
+  button.addEventListener("contextmenu", (event) => event.preventDefault());
+});
+
+function releaseGameControls() {
+  keys.clear();
+  touchButtons.forEach((button) => {
+    button.classList.remove("is-pressed");
+    button.setAttribute("aria-pressed", "false");
+  });
+}
+
+window.addEventListener("blur", releaseGameControls);
+document.addEventListener("visibilitychange", () => {
+  if (document.hidden) releaseGameControls();
 });
 
 function resetGame() {
@@ -498,7 +552,7 @@ function startGame() {
   resetGame();
   gameRunning = true;
   startButton.textContent = "Restart Game";
-  gameStatus.textContent = "Golden Sunny is out. Collect the stack and dodge rocks.";
+  gameStatus.textContent = "Tech Stack started. Collect every piece and dodge the rocks.";
   cancelAnimationFrame(animationFrame);
   animationFrame = requestAnimationFrame(gameLoop);
 }
@@ -544,7 +598,7 @@ function checkCollisions(now) {
       item.collected = true;
       score += 1;
       gameStatus.textContent =
-        score % 4 === 0 ? "Golden Sunny is stacking up nicely." : "Nice pickup.";
+        score % 4 === 0 ? "The stack is coming together." : "Nice pickup.";
     }
   });
 
@@ -572,6 +626,8 @@ function checkCollisions(now) {
 }
 
 function drawGame(now = performance.now()) {
+  canvas.dataset.playerX = Math.round(player?.x || 0);
+  canvas.dataset.playerY = Math.round(player?.y || 0);
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   drawWater(now);
   drawRocks();
@@ -637,7 +693,7 @@ function drawBoat(now) {
   ctx.fillStyle = "#fff7c4";
   ctx.font = "600 8px 'Press Start 2P', sans-serif";
   ctx.textAlign = "center";
-  ctx.fillText("GS", player.x + 27, player.y + 14);
+  ctx.fillText("TS", player.x + 27, player.y + 14);
 }
 
 function drawCloud(x, y, width, height) {
@@ -694,15 +750,15 @@ function drawRocks() {
 
 function drawHud() {
   ctx.fillStyle = "rgba(255, 249, 234, 0.94)";
-  roundedRect(18, 16, 318, 44, 8);
+  roundedRect(18, 16, 296, 42, 8);
   ctx.fill();
   ctx.fillStyle = "#102033";
-  ctx.font = "800 16px Inter, sans-serif";
+  ctx.font = "800 12px Inter, sans-serif";
   ctx.textAlign = "left";
   ctx.textBaseline = "middle";
-  ctx.fillText("Golden Sunny", 34, 39);
-  ctx.fillText(`Stack ${score}/${collectibles.length}`, 148, 39);
-  ctx.fillText(`Time ${Math.ceil(Math.max(0, timeLeft))}`, 244, 39);
+  ctx.fillText("TECH STACK", 32, 37);
+  ctx.fillText(`Collected ${score}/${collectibles.length}`, 122, 37);
+  ctx.fillText(`Time ${Math.ceil(Math.max(0, timeLeft))}`, 238, 37);
 }
 
 function endGame() {
@@ -712,7 +768,7 @@ function endGame() {
   drawGame();
   gameStatus.textContent =
     score === collectibles.length
-      ? "Full stack collected. Golden Sunny cleared the route."
+      ? "Full Tech Stack collected. Route complete."
       : `Voyage complete. Stack collected: ${score}/${collectibles.length}.`;
 }
 
@@ -764,6 +820,7 @@ async function submitContactForm(event) {
   }
 }
 
+initializeHeroNameAnimation();
 renderPortfolioContent();
 initializeNavigation();
 initializeRevealAnimations();

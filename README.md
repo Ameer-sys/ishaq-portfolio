@@ -2,7 +2,7 @@
 
 A responsive portfolio for Ishaq Ishaq Nasiru, a Computer Science student and software developer building software, embedded systems, IoT projects, AI tools, and real-world technical solutions.
 
-![Voxel ocean portfolio preview](assets/ishaq-voxel-hero.webp)
+![Minecraft-inspired ocean portfolio preview](assets/ishaq-voxel-scene.webp)
 
 ## Live Site
 
@@ -13,7 +13,7 @@ A responsive portfolio for Ishaq Ishaq Nasiru, a Computer Science student and so
 - Semantic HTML5
 - Modern responsive CSS with light and dark themes
 - Vanilla JavaScript
-- Canvas API for the Golden Sunny mini-game
+- Canvas API for the Tech Stack mini-game
 - FormSubmit for the static contact form
 - GitHub Pages for production hosting
 
@@ -40,7 +40,7 @@ styles.css                 Layout, themes, responsive design, and motion
 
 ## Content Maintenance
 
-Portfolio entries are centralized in `data/portfolio-data.js`. Optional fields such as GitHub and live URLs render only when real values are present. Project status labels distinguish completed work, prototypes, active development, and concepts.
+Portfolio entries are centralized in `data/portfolio-data.js`. Optional fields such as GitHub and live URLs render only when real values are present. Project status labels distinguish completed work, prototypes, and active development.
 
 ## Deployment
 
