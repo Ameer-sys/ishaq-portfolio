@@ -84,6 +84,8 @@ window.portfolioData = {
       featured: true,
       projectStatus: "In development",
       visual: "blockbuilt",
+      liveUrl: "https://ameer-sys.github.io/About-BlockBuilt/",
+      liveLabel: "Showcase",
       keyFeatures: [
         "Authentication, persistent sessions, and protected routes",
         "Multi-step onboarding and database-backed challenges",
@@ -104,6 +106,7 @@ window.portfolioData = {
       featured: true,
       projectStatus: "Completed hackathon project",
       visual: "legalai",
+      githubUrl: "https://github.com/Ameer-sys/conhacks2025---LegalAI",
       keyFeatures: [
         "Ontario landlord and tenant information focus",
         "Structured and unstructured legal-document processing",
@@ -218,6 +221,7 @@ window.portfolioData = {
       featured: false,
       projectStatus: "Completed academic project",
       visual: "smadium",
+      githubUrl: "https://github.com/Ameer-sys/SmartStadiumManagementSystem",
       keyFeatures: ["Three-layer architecture", "Role-based access", "Sensor simulation"],
     },
   ],

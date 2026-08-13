@@ -111,8 +111,9 @@ function projectLinks(project) {
   }
 
   if (project.liveUrl) {
+    const liveLabel = project.liveLabel || "Live project";
     links.push(
-      `<a class="project-link" href="${escapeHtml(project.liveUrl)}" target="_blank" rel="noopener noreferrer">Live project</a>`
+      `<a class="project-link" href="${escapeHtml(project.liveUrl)}" target="_blank" rel="noopener noreferrer">${escapeHtml(liveLabel)}</a>`
     );
   }
 
